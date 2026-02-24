@@ -4,161 +4,101 @@ import { Message } from "@/types/chat"
 import ChatMessage from "./ChatMessage"
 import Hero from "./Hero"
 
-export default function ChatBox(){
+export default function ChatBox() {
+  const [messages, setMessages] = useState<Message[]>([])
+  const [input, setInput] = useState("")
+  const [loading, setLoading] = useState(false)
 
-const [messages,setMessages] =
-useState<Message[]>([])
+  const bottomRef = useRef<HTMLDivElement>(null)
 
-const [input,setInput] = useState("")
-const [loading,setLoading] = useState(false)
-
-const bottomRef = useRef<HTMLDivElement>(null)
-
-
-// Auto scroll
-useEffect(()=>{
-
-bottomRef.current?.scrollIntoView({
-behavior:"smooth"
-})
-
-},[messages,loading])
+  // Auto scroll to bottom when messages change
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth"
+    })
+  }, [messages, loading])
 
 
-const typeMessage = async (text:string)=>{
-
-let current=""
-
-for(let i=0;i<text.length;i++){
-
-current+=text[i]
-
-setMessages(prev=>{
-
-const updated=[...prev]
-
-updated[updated.length-1]={
-role:"ai",
-content:current
-}
-
-return updated
-})
-
-await new Promise(r=>setTimeout(r,10))
-
-}
-
-}
+  const typeMessage = async (text: string) => {
+    let current = ""
+    for (let i = 0; i < text.length; i++) {
+      current += text[i]
+      setMessages((prev) => {
+        const updated = [...prev]
+        updated[updated.length - 1] = {
+          role: "ai",
+          content: current
+        }
+        return updated
+      })
+      await new Promise((r) => setTimeout(r, 10))
+    }
+  }
 
 
-const handleSend = async ()=>{
+  const handleSend = async () => {
+    if (!input.trim()) return
 
-if(!input.trim()) return
+    const userMessage: Message = {
+      role: "user",
+      content: input
+    }
 
-const userMessage:Message={
-role:"user",
-content:input
-}
+    setMessages((prev) => [...prev, userMessage])
+    setInput("")
+    setLoading(true)
 
-setMessages(prev=>[...prev,userMessage])
+    const res = await sendMessage(input)
 
-setInput("")
-setLoading(true)
+    setMessages((prev) => [
+      ...prev,
+      { role: "ai", content: "" }
+    ])
 
-
-const res=await sendMessage(input)
-
-
-setMessages(prev=>[
-...prev,
-{role:"ai",content:""}
-])
-
-await typeMessage(res.response)
-
-setLoading(false)
-
-}
+    await typeMessage(res.response)
+    setLoading(false)
+  }
 
 
-return(
+  return (
+    <div className="h-screen flex flex-col">
+      <Hero />
 
-<div className="h-screen flex flex-col">
+      <div className="flex-1 overflow-y-auto max-w-3xl mx-auto w-full p-6 space-y-4">
+        {messages.map((m, i) => (
+          <ChatMessage key={i} message={m} />
+        ))}
 
-<Hero/>
+        {loading && (
+          <div className="text-gray-400">
+            AI typing...
+          </div>
+        )}
 
-<div className="flex-1 overflow-y-auto
-max-w-3xl mx-auto w-full p-6 space-y-4">
+        <div ref={bottomRef} />
+      </div>
 
-{messages.map((m,i)=>(
-<ChatMessage key={i} message={m}/>
-))}
+      <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-2xl flex gap-2 bg-white shadow-xl rounded-2xl p-3">
+        <textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask me anything..."
+          className="flex-1 outline-none resize-none"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault()
+              handleSend()
+            }
+          }}
+        />
 
-{loading && (
-<div className="text-gray-400">
-AI typing...
-</div>
-)}
-
-<div ref={bottomRef}/>
-
-</div>
-
-
-<div className="
-fixed
-bottom-10
-left-1/2
-transform
--translate-x-1/2
-w-full
-max-w-2xl
-flex
-gap-2
-bg-white
-shadow-xl
-rounded-2xl
-p-3
-">
-
-<textarea
-value={input}
-onChange={(e)=>setInput(e.target.value)}
-placeholder="Ask me anything..."
-className="
-flex-1
-outline-none
-resize-none
-"
-onKeyDown={(e)=>{
-
-if(e.key==="Enter" && !e.shiftKey){
-
-e.preventDefault()
-handleSend()
-
-}
-
-}}
-/>
-
-<button
-onClick={handleSend}
-className="
-bg-black
-text-white
-px-6
-rounded-xl
-">
-
-Send
-
-</button>
-
-</div>
-
-</div>
-
-)
+        <button
+          onClick={handleSend}
+          className="bg-black text-white px-6 rounded-xl"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  )
 }

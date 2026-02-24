@@ -14,6 +14,7 @@ app.add_middleware(
 
 app.include_router(chat_router)
 
+
 @app.get("/")
 def home():
-    return {"message":"AI Portfolio Backend Running"}
+    return {"message": "AI Portfolio Backend Running"}

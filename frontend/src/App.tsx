@@ -1,12 +1,18 @@
-import { FC } from "react"
 import ChatBox from "./components/ChatBox"
+import AnimatedBackground from "./components/AnimatedBackground"
 
-const App: FC = () => {
-  return (
-    <div className="h-screen flex justify-center items-center">
-      <ChatBox />
-    </div>
-  )
+export default function App(){
+
+return(
+
+<div>
+
+<AnimatedBackground/>
+
+<ChatBox/>
+
+</div>
+
+)
+
 }
-
-export default App

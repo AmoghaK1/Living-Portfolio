@@ -1,37 +1,164 @@
-import { useState, FC } from "react"
-import { sendMessage } from "../lib/api"
+import { useState, useRef, useEffect } from "react"
+import { sendMessage } from "@/lib/api"
+import { Message } from "@/types/chat"
+import ChatMessage from "./ChatMessage"
+import Hero from "./Hero"
 
-const ChatBox: FC = () => {
+export default function ChatBox(){
 
-const [message, setMessage] = useState<string>("")
-const [response, setResponse] = useState<string>("")
+const [messages,setMessages] =
+useState<Message[]>([])
 
-const handleSend = async (): Promise<void> => {
-  const res = await sendMessage(message)
-  setResponse(res.response)
+const [input,setInput] = useState("")
+const [loading,setLoading] = useState(false)
+
+const bottomRef = useRef<HTMLDivElement>(null)
+
+
+// Auto scroll
+useEffect(()=>{
+
+bottomRef.current?.scrollIntoView({
+behavior:"smooth"
+})
+
+},[messages,loading])
+
+
+const typeMessage = async (text:string)=>{
+
+let current=""
+
+for(let i=0;i<text.length;i++){
+
+current+=text[i]
+
+setMessages(prev=>{
+
+const updated=[...prev]
+
+updated[updated.length-1]={
+role:"ai",
+content:current
 }
 
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <input
-        className="border p-3 w-96 rounded-xl"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Ask me anything..."
-      />
+return updated
+})
 
-      <button
-        onClick={handleSend}
-        className="bg-black text-white px-6 py-2 rounded-xl"
-      >
-        Send
-      </button>
+await new Promise(r=>setTimeout(r,10))
 
-      <div className="w-96">
-        {response}
-      </div>
-    </div>
-  )
 }
 
-export default ChatBox
+}
+
+
+const handleSend = async ()=>{
+
+if(!input.trim()) return
+
+const userMessage:Message={
+role:"user",
+content:input
+}
+
+setMessages(prev=>[...prev,userMessage])
+
+setInput("")
+setLoading(true)
+
+
+const res=await sendMessage(input)
+
+
+setMessages(prev=>[
+...prev,
+{role:"ai",content:""}
+])
+
+await typeMessage(res.response)
+
+setLoading(false)
+
+}
+
+
+return(
+
+<div className="h-screen flex flex-col">
+
+<Hero/>
+
+<div className="flex-1 overflow-y-auto
+max-w-3xl mx-auto w-full p-6 space-y-4">
+
+{messages.map((m,i)=>(
+<ChatMessage key={i} message={m}/>
+))}
+
+{loading && (
+<div className="text-gray-400">
+AI typing...
+</div>
+)}
+
+<div ref={bottomRef}/>
+
+</div>
+
+
+<div className="
+fixed
+bottom-10
+left-1/2
+transform
+-translate-x-1/2
+w-full
+max-w-2xl
+flex
+gap-2
+bg-white
+shadow-xl
+rounded-2xl
+p-3
+">
+
+<textarea
+value={input}
+onChange={(e)=>setInput(e.target.value)}
+placeholder="Ask me anything..."
+className="
+flex-1
+outline-none
+resize-none
+"
+onKeyDown={(e)=>{
+
+if(e.key==="Enter" && !e.shiftKey){
+
+e.preventDefault()
+handleSend()
+
+}
+
+}}
+/>
+
+<button
+onClick={handleSend}
+className="
+bg-black
+text-white
+px-6
+rounded-xl
+">
+
+Send
+
+</button>
+
+</div>
+
+</div>
+
+)
+}

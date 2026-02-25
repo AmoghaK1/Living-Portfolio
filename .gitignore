@@ -31,6 +31,8 @@ env/
 .coverage
 .coverage.*
 htmlcov/
+data/
+
 
 # --- Node / Vite (frontend) ---
 node_modules/

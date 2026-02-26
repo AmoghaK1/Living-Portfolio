@@ -32,11 +32,11 @@ export default function BYHero() {
             <button
               onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
               className="
-                px-8 py-4 rounded-full text-base font-semibold
+                px-8 py-4 rounded-none text-base font-semibold
                 bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500
                 text-white shadow-md
-                hover:scale-105 hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]
-                transition-all duration-300
+                hover:rounded-3xl hover:scale-105 hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]
+                transition-all duration-200 ease-in-out
               "
             >
               View Projects
@@ -44,9 +44,9 @@ export default function BYHero() {
             <button
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               className="
-                px-8 py-4 rounded-full text-base font-semibold border border-gray-200
-                text-gray-700 hover:border-purple-400 hover:text-purple-600
-                transition-all duration-200
+                px-8 py-4 rounded-none text-base font-semibold border border-gray-300
+                text-gray-700 hover:rounded-3xl hover:border-purple-400 hover:text-purple-600
+                transition-all duration-200 ease-in-out
               "
             >
               Contact Me

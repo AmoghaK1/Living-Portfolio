@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { colors } from "@/lib/colors"
 
 export default function BYHero() {
   return (
@@ -13,16 +14,16 @@ export default function BYHero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <p className="text-base font-semibold tracking-widest text-purple-500 uppercase mb-4">
+          <p className="text-base font-semibold tracking-widest uppercase mb-4" style={{ color: colors.secondary }}>
             AI Engineer & ML Developer
           </p>
-          <h1 className="text-6xl md:text-7xl font-bold text-gray-900 leading-tight mb-8">
+          <h1 className="text-6xl md:text-7xl font-bold leading-tight mb-8" style={{ color: colors.primary }}>
             Hi, I'm{" "}
-            <span className="bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500 bg-clip-text text-transparent">
+            <span style={{ background: colors.gradientPrimary, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Amogha Khare
             </span>
           </h1>
-          <p className="text-gray-500 text-xl leading-relaxed mb-10 max-w-lg">
+          <p className="text-xl leading-relaxed mb-10 max-w-lg" style={{ color: colors.secondary }}>
             I build intelligent systems — from conversational AI to computer vision
             pipelines. I'm passionate about turning research into real-world products
             that are fast, reliable, and human-centred.
@@ -31,23 +32,19 @@ export default function BYHero() {
           <div className="flex gap-5 flex-wrap">
             <button
               onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-              className="
-                px-8 py-4 rounded-none text-base font-semibold
-                bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500
-                text-white shadow-md
-                hover:rounded-3xl hover:scale-105 hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]
-                transition-all duration-200 ease-in-out
-              "
+              className="px-8 py-4 rounded-none text-base font-semibold text-white shadow-md hover:rounded-3xl hover:scale-105 transition-all duration-200 ease-in-out"
+              style={{ backgroundColor: colors.primary }}
+              onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.accent)}
+              onMouseLeave={e => (e.currentTarget.style.backgroundColor = colors.primary)}
             >
               View Projects
             </button>
             <button
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-              className="
-                px-8 py-4 rounded-none text-base font-semibold border border-gray-300
-                text-gray-700 hover:rounded-3xl hover:border-purple-400 hover:text-purple-600
-                transition-all duration-200 ease-in-out
-              "
+              className="px-8 py-4 rounded-none text-base font-semibold hover:rounded-3xl transition-all duration-200 ease-in-out"
+              style={{ border: `1.5px solid ${colors.secondary}`, color: colors.primary }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = colors.primary; e.currentTarget.style.color = colors.accent }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = colors.secondary; e.currentTarget.style.color = colors.primary }}
             >
               Contact Me
             </button>
@@ -62,9 +59,9 @@ export default function BYHero() {
           className="flex justify-center"
         >
           <div className="relative w-96 h-96">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-300 via-blue-300 to-pink-300 opacity-40 blur-3xl" />
-            <div className="relative w-full h-full rounded-full border-4 border-white shadow-2xl bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 flex items-center justify-center">
-              <span className="text-8xl font-bold bg-gradient-to-br from-purple-500 via-blue-500 to-pink-500 bg-clip-text text-transparent">
+            <div className="absolute inset-0 rounded-full opacity-40 blur-3xl" style={{ background: colors.glowTeal }} />
+            <div className="relative w-full h-full rounded-full border-4 shadow-2xl flex items-center justify-center" style={{ borderColor: colors.tertiary, background: colors.gradientAvatarBg }}>
+              <span className="text-8xl font-bold" style={{ background: colors.gradientAvatar, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 AK
               </span>
             </div>

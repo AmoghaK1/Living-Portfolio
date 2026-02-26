@@ -1,6 +1,7 @@
 import Typewriter from "typewriter-effect"
 import { motion } from "framer-motion"
 import Underline from "./Underline"
+import { colors } from "@/lib/colors"
 
 export default function Hero() {
   return (
@@ -10,12 +11,12 @@ export default function Hero() {
       transition={{ duration: 1 }}
       className="text-center pt-32 pb-10"
     >
-      <h1 className="text-6xl font-bold">
+      <h1 className="text-6xl font-bold" style={{ color: colors.primary }}>
         Hi, I'm Amogha
       </h1>
       <Underline />
 
-      <div className="text-2xl mt-6 text-gray-600">
+      <div className="text-2xl mt-6" style={{ color: colors.secondary }}>
         <Typewriter
           options={{
             strings: [

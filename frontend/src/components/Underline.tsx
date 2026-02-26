@@ -1,4 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion"
+import { colors } from "@/lib/colors"
 
 export default function Underline() {
   const { scrollYProgress } = useScroll()
@@ -11,8 +12,8 @@ export default function Underline() {
 
   return (
     <motion.div
-      style={{ scaleX: scale }}
-      className="origin-left h-1 bg-black w-40 mx-auto mt-3"
+      style={{ scaleX: scale, backgroundColor: colors.primary }}
+      className="origin-left h-1 w-40 mx-auto mt-3"
     />
   )
 }

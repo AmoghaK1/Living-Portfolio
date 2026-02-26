@@ -1,3 +1,5 @@
+import { colors } from "@/lib/colors"
+
 interface Props {
   onBack: () => void
 }
@@ -10,9 +12,9 @@ export default function BYNavbar({ onBack }: Props) {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ backgroundColor: colors.navbarBg, borderBottom: `1px solid ${colors.tertiary}` }}>
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500 bg-clip-text text-transparent">
+        <span className="text-lg font-bold tracking-tight" style={{ color: colors.primary }}>
           Amogha K.
         </span>
 
@@ -21,7 +23,9 @@ export default function BYNavbar({ onBack }: Props) {
             <button
               key={link}
               onClick={() => scrollTo(link.toLowerCase())}
-              className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
+              className="text-sm transition-colors duration-200" style={{ color: colors.secondary }}
+              onMouseEnter={e => (e.currentTarget.style.color = colors.primary)}
+              onMouseLeave={e => (e.currentTarget.style.color = colors.secondary)}
             >
               {link}
             </button>
@@ -30,11 +34,10 @@ export default function BYNavbar({ onBack }: Props) {
 
         <button
           onClick={onBack}
-          className="
-            px-4 py-2 text-sm font-medium rounded-full border border-gray-200
-            text-gray-600 hover:border-purple-400 hover:text-purple-600
-            transition-all duration-200
-          "
+          className="px-4 py-2 text-sm font-medium rounded-full transition-all duration-200"
+          style={{ border: `1.5px solid ${colors.secondary}`, color: colors.primary }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = colors.primary; e.currentTarget.style.color = colors.accent }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = colors.secondary; e.currentTarget.style.color = colors.primary }}
         >
           ← Back to Chat
         </button>

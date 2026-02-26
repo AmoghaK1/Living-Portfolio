@@ -2,6 +2,7 @@ import BYHero from "@/components/backyard/BYHero"
 import BYExperience from "@/components/backyard/BYExperience"
 import BYProjects from "@/components/backyard/BYProjects"
 import BYContact from "@/components/backyard/BYContact"
+import { colors } from "@/lib/colors"
 
 interface Props {
   onBack: () => void
@@ -36,13 +37,13 @@ const socialLinks = [
         <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
       </svg>
     ),
-    color: "hover:bg-purple-600",
+    color: "hover:bg-[#7F543D]",
   },
 ]
 
 export default function Backyard({ onBack }: Props) {
   return (
-    <div className="min-h-screen text-gray-900">
+    <div className="min-h-screen" style={{ backgroundColor: colors.background, color: colors.primary }}>
       {/* Floating social links — left side */}
       <div className="fixed left-0 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2">
         {socialLinks.map(({ name, href, icon, color }) => (
@@ -53,15 +54,16 @@ export default function Backyard({ onBack }: Props) {
             rel="noopener noreferrer"
             className={`
               group flex items-center
-              bg-white/90 backdrop-blur-sm
-              text-gray-700 shadow-lg
+              backdrop-blur-sm
+              shadow-lg
               rounded-r-xl overflow-hidden
               transition-all duration-300 ease-in-out
               w-20 hover:w-44
               h-20
               ${color} hover:text-white
-              border border-gray-200 hover:border-transparent
+              hover:border-transparent
             `}
+            style={{ backgroundColor: colors.tertiary, color: colors.primary, border: `1.5px solid ${colors.secondary}` }}
           >
             <span className="flex items-center justify-center w-20 h-20 shrink-0">
               {icon}
@@ -77,16 +79,10 @@ export default function Backyard({ onBack }: Props) {
       <div className="fixed top-0 left-0 right-0 z-50 flex justify-end items-center px-6 py-4 pointer-events-none">
         <button
           onClick={onBack}
-          className="
-            pointer-events-auto
-            relative px-5 py-2.5 text-sm font-semibold rounded-full
-            bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400
-            text-white shadow-md
-            transition-all duration-300 ease-in-out
-            hover:scale-105 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]
-            hover:from-purple-500 hover:via-blue-500 hover:to-pink-500
-            active:scale-95
-          "
+          className="pointer-events-auto relative px-5 py-2.5 text-sm font-semibold rounded-full text-white shadow-md transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
+          style={{ backgroundColor: colors.primary }}
+          onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.accent)}
+          onMouseLeave={e => (e.currentTarget.style.backgroundColor = colors.primary)}
         >
           ← Back to Chat
         </button>

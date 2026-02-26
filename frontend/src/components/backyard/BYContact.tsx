@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import { Mail, Github, Linkedin } from "lucide-react"
+import { colors } from "@/lib/colors"
 
 const links = [
   { icon: Mail, label: "Email", value: "amogha@example.com", href: "mailto:amogha@example.com" },
@@ -9,7 +10,7 @@ const links = [
 
 export default function BYContact() {
   return (
-    <section id="contact" className="py-32 bg-gray-50/60">
+    <section id="contact" className="py-32" style={{ backgroundColor: colors.sectionTint }}>
       <div className="max-w-5xl mx-auto px-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -17,11 +18,11 @@ export default function BYContact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-base font-semibold tracking-widest text-purple-500 uppercase mb-3">
+          <p className="text-base font-semibold tracking-widest uppercase mb-3" style={{ color: colors.secondary }}>
             Get In Touch
           </p>
-          <h2 className="text-5xl font-bold text-gray-900 mb-5">Contact Me</h2>
-          <p className="text-gray-500 text-xl mb-14 max-w-2xl mx-auto">
+          <h2 className="text-5xl font-bold mb-5" style={{ color: colors.primary }}>Contact Me</h2>
+          <p className="text-xl mb-14 max-w-2xl mx-auto" style={{ color: colors.secondary }}>
             I'm open to opportunities, collaborations, and interesting conversations.
             Reach out via any of the channels below.
           </p>
@@ -33,18 +34,15 @@ export default function BYContact() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="
-                  flex items-center gap-4 px-8 py-5 rounded-2xl bg-white border border-gray-100
-                  shadow-sm hover:shadow-md hover:border-purple-200 hover:-translate-y-1
-                  transition-all duration-300 group text-left
-                "
+                className="flex items-center gap-4 px-8 py-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group text-left"
+                style={{ backgroundColor: colors.white, border: `1.5px solid ${colors.tertiary}` }}
               >
-                <span className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-purple-500" />
+                <span className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: colors.tertiary }}>
+                  <Icon className="w-5 h-5" style={{ color: colors.primary }} />
                 </span>
                 <div>
-                  <p className="text-sm text-gray-400 font-medium">{label}</p>
-                  <p className="text-base text-gray-700 font-semibold group-hover:text-purple-600 transition-colors duration-200">
+                  <p className="text-sm font-medium" style={{ color: colors.secondary }}>{label}</p>
+                  <p className="text-base font-semibold transition-colors duration-200" style={{ color: colors.primary }}>
                     {value}
                   </p>
                 </div>
@@ -55,7 +53,7 @@ export default function BYContact() {
       </div>
 
       {/* Footer */}
-      <div className="mt-28 text-center text-sm text-gray-400">
+      <div className="mt-28 text-center text-sm" style={{ color: colors.accent }}>
         Built with React, Tailwind & FastAPI · Amogha K. © {new Date().getFullYear()}
       </div>
     </section>

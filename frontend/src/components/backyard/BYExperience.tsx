@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { colors } from "@/lib/colors"
 
 const experiences = [
   {
@@ -29,7 +30,7 @@ const experiences = [
 
 export default function BYExperience() {
   return (
-    <section id="experience" className="py-32 bg-gray-50/60">
+    <section id="experience" className="py-32" style={{ backgroundColor: colors.sectionTint }}>
       <div className="max-w-5xl mx-auto px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -38,13 +39,13 @@ export default function BYExperience() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <p className="text-base font-semibold tracking-widest text-purple-500 uppercase mb-3">
+          <p className="text-base font-semibold tracking-widest uppercase mb-3" style={{ color: colors.secondary }}>
             Where I've Worked
           </p>
-          <h2 className="text-5xl font-bold text-gray-900">Experience</h2>
+          <h2 className="text-5xl font-bold" style={{ color: colors.primary }}>Experience</h2>
         </motion.div>
 
-        <div className="relative pl-8 border-l-2 border-gray-200 space-y-14">
+        <div className="relative pl-8 space-y-14" style={{ borderLeft: `2px solid ${colors.tertiary}` }}>
           {experiences.map((exp, i) => (
             <motion.div
               key={i}
@@ -55,22 +56,23 @@ export default function BYExperience() {
               className="relative"
             >
               {/* Timeline dot */}
-              <span className="absolute -left-[2.1rem] top-2 w-4 h-4 rounded-full bg-gradient-to-br from-purple-400 to-blue-400 border-2 border-white shadow" />
+              <span className="absolute -left-[2.1rem] top-2 w-4 h-4 rounded-full shadow" style={{ background: colors.gradientTimeline, border: `2px solid ${colors.background}` }} />
 
-              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300" style={{ backgroundColor: colors.white, border: `1px solid ${colors.tertiary}` }}>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900">{exp.role}</h3>
-                    <p className="text-purple-500 text-base font-medium">{exp.company}</p>
+                    <h3 className="text-xl font-semibold" style={{ color: colors.primary }}>{exp.role}</h3>
+                    <p className="text-base font-medium" style={{ color: colors.secondary }}>{exp.company}</p>
                   </div>
-                  <span className="text-sm text-gray-400 font-medium whitespace-nowrap">{exp.period}</span>
+                  <span className="text-sm font-medium whitespace-nowrap" style={{ color: colors.secondary }}>{exp.period}</span>
                 </div>
-                <p className="text-gray-500 text-base leading-relaxed mb-5">{exp.description}</p>
+                <p className="text-base leading-relaxed mb-5" style={{ color: colors.bodyText }}>{exp.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {exp.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-sm px-4 py-1.5 rounded-full bg-purple-50 text-purple-600 font-medium"
+                      className="text-sm px-4 py-1.5 rounded-full font-medium"
+                      style={{ backgroundColor: colors.tertiary, color: colors.primary }}
                     >
                       {tag}
                     </span>

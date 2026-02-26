@@ -13,7 +13,7 @@ export default function BYNavbar({ onBack }: Props) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ backgroundColor: colors.navbarBg, borderBottom: `1px solid ${colors.tertiary}` }}>
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
         <span className="text-lg font-bold tracking-tight" style={{ color: colors.primary }}>
           Amogha K.
         </span>
@@ -34,10 +34,10 @@ export default function BYNavbar({ onBack }: Props) {
 
         <button
           onClick={onBack}
-          className="px-4 py-2 text-sm font-medium rounded-full transition-all duration-200"
-          style={{ border: `1.5px solid ${colors.secondary}`, color: colors.primary }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = colors.primary; e.currentTarget.style.color = colors.accent }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = colors.secondary; e.currentTarget.style.color = colors.primary }}
+          className="px-8 py-3.5 text-lg font-semibold rounded-full shadow-md text-white transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
+          style={{ backgroundColor: colors.primary }}
+          onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.accent)}
+          onMouseLeave={e => (e.currentTarget.style.backgroundColor = colors.primary)}
         >
           ← Back to Chat
         </button>

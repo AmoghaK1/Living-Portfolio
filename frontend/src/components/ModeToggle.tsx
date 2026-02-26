@@ -10,7 +10,7 @@ export default function ModeToggle({ onSwitch }: Props) {
       <button
         onClick={onSwitch}
         className="
-          relative px-5 py-2.5 text-sm font-semibold rounded-full
+          relative px-8 py-3.5 text-lg font-semibold rounded-full
           text-white shadow-md
           transition-all duration-300 ease-in-out
           hover:scale-105 active:scale-95

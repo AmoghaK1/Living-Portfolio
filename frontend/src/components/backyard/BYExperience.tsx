@@ -3,28 +3,28 @@ import { colors } from "@/lib/colors"
 
 const experiences = [
   {
-    role: "AI Engineer Intern",
-    company: "TechCorp AI",
-    period: "Jun 2025 – Dec 2025",
+    role: "Data Engineering Intern",
+    company: "Techknowgreen Solutions Global · Govt. of Maharashtra",
+    period: "Jul 2025 – Sep 2025",
     description:
-      "Built end-to-end RAG pipelines using FAISS and LangChain, reducing hallucination rates by 35%. Integrated OpenAI APIs into production chat workflows serving 10k+ users.",
-    tags: ["RAG", "LangChain", "FastAPI", "OpenAI"],
+      "Worked on environmental data processing for government performance evaluation. Validated village-level datasets against official guidelines and automated repetitive data processing workflows, improving dataset accuracy significantly.",
+    tags: ["Python", "Pandas", "NumPy", "Data Validation", "Automation"],
   },
   {
-    role: "Machine Learning Developer",
-    company: "VisionLab",
-    period: "Jan 2025 – May 2025",
+    role: "AWS Developer Intern",
+    company: "TechEasy Consultancy",
+    period: "May 2025 – Jun 2025",
     description:
-      "Designed a real-time object detection system using YOLOv8 and OpenCV, achieving 94% mAP on a custom dataset. Deployed on edge devices with TensorRT optimisation.",
-    tags: ["YOLOv8", "OpenCV", "TensorRT", "Python"],
+      "Contributed to backend API development for Real Review, a real-time real estate web application. Worked with AWS serverless infrastructure and participated in Agile Scrum meetings to track weekly progress.",
+    tags: ["AWS Lambda", "EC2", "S3", "API Gateway", "Python", "REST API"],
   },
   {
-    role: "Full-Stack Developer",
-    company: "Freelance",
-    period: "2024 – Present",
+    role: "Data Analyst & Power BI Intern",
+    company: "Vodafone Idea Foundation",
+    period: "Jun 2024 – Jul 2024",
     description:
-      "Delivered 5+ client projects involving React frontends, Node/FastAPI backends, and cloud deployments on AWS and Vercel. Focused on clean architecture and performance.",
-    tags: ["React", "FastAPI", "AWS", "Tailwind"],
+      "Analyzed structured datasets to identify patterns and trends. Cleaned and prepared data for analysis and applied data analytics techniques to generate actionable business insights.",
+    tags: ["Power BI", "Data Analysis", "Python", "Excel"],
   },
 ]
 

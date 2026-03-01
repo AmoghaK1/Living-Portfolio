@@ -3,9 +3,9 @@ import { Mail, Github, Linkedin } from "lucide-react"
 import { colors } from "@/lib/colors"
 
 const links = [
-  { icon: Mail, label: "Email", value: "amogha@example.com", href: "mailto:amogha@example.com" },
-  { icon: Github, label: "GitHub", value: "github.com/amogha", href: "https://github.com" },
-  { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/amogha", href: "https://linkedin.com" },
+  { icon: Mail, label: "Email", value: "amogha.khare@gmail.com", href: "mailto:amogha.khare@gmail.com" },
+  { icon: Github, label: "GitHub", value: "github.com/amogha-khare", href: "https://github.com/amogha-khare" },
+  { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/amogha-khare", href: "https://linkedin.com/in/amogha-khare" },
 ]
 
 export default function BYContact() {

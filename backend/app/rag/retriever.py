@@ -6,7 +6,7 @@ import numpy as np
 index,chunks=load_index()
 
 
-def search(query,k=3):
+def search(query,k=4):
 
     query_vector=model.encode(
         [query]

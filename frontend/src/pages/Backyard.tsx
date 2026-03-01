@@ -44,8 +44,8 @@ const socialLinks = [
 export default function Backyard({ onBack }: Props) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.background, color: colors.primary }}>
-      {/* Floating social links — left side */}
-      <div className="fixed left-0 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2">
+      {/* Floating social links — left side, hidden on mobile */}
+      <div className="hidden md:flex fixed left-0 top-1/2 -translate-y-1/2 z-50 flex-col gap-2">
         {socialLinks.map(({ name, href, icon, color }) => (
           <a
             key={name}
@@ -88,7 +88,7 @@ export default function Backyard({ onBack }: Props) {
         </button>
       </div>
 
-      <main>
+      <main className="pt-16">
         <BYHero />
         <BYExperience />
         <BYProjects />

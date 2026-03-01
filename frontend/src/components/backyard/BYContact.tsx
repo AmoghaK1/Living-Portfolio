@@ -10,8 +10,8 @@ const links = [
 
 export default function BYContact() {
   return (
-    <section id="contact" className="py-32" style={{ backgroundColor: colors.sectionTint }}>
-      <div className="max-w-5xl mx-auto px-10 text-center">
+    <section id="contact" className="py-16 md:py-32" style={{ backgroundColor: colors.sectionTint }}>
+      <div className="max-w-5xl mx-auto px-5 md:px-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -21,8 +21,8 @@ export default function BYContact() {
           <p className="text-base font-semibold tracking-widest uppercase mb-3" style={{ color: colors.secondary }}>
             Get In Touch
           </p>
-          <h2 className="text-5xl font-bold mb-5" style={{ color: colors.primary }}>Contact Me</h2>
-          <p className="text-xl mb-14 max-w-2xl mx-auto" style={{ color: colors.secondary }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 md:mb-5" style={{ color: colors.primary }}>Contact Me</h2>
+          <p className="text-base md:text-xl mb-10 md:mb-14 max-w-2xl mx-auto" style={{ color: colors.secondary }}>
             I'm open to opportunities, collaborations, and interesting conversations.
             Reach out via any of the channels below.
           </p>
@@ -34,7 +34,7 @@ export default function BYContact() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 px-8 py-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group text-left"
+                className="flex items-center gap-3 md:gap-4 px-5 md:px-8 py-4 md:py-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group text-left"
                 style={{ backgroundColor: colors.white, border: `1.5px solid ${colors.tertiary}` }}
               >
                 <span className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: colors.tertiary }}>

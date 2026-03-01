@@ -9,14 +9,14 @@ export default function Hero() {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
-      className="text-center pt-32 pb-10"
+      className="text-center pt-24 md:pt-32 pb-10 px-4"
     >
-      <h1 className="text-6xl font-bold" style={{ color: colors.primary }}>
+      <h1 className="text-4xl md:text-6xl font-bold" style={{ color: colors.primary }}>
         Hi, I'm Amogha
       </h1>
       <Underline />
 
-      <div className="text-2xl mt-6" style={{ color: colors.secondary }}>
+      <div className="text-xl md:text-2xl mt-6" style={{ color: colors.secondary }}>
         <Typewriter
           options={{
             strings: [

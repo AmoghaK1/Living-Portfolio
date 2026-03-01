@@ -17,7 +17,7 @@ export default function ChatMessage({ message }: Props) {
       className={`flex ${isUser ? "justify-end" : "justify-start"}`}
     >
       <div
-        className="max-w-[70%] p-4 rounded-2xl shadow-sm leading-relaxed text-[18px]"
+        className="max-w-[88%] md:max-w-[70%] p-3 md:p-4 rounded-2xl shadow-sm leading-relaxed text-base md:text-[18px]"
         style={isUser
           ? { backgroundColor: colors.primary, color: colors.background }
           : { backgroundColor: colors.white, border: `1.5px solid ${colors.tertiary}`, color: colors.primary }

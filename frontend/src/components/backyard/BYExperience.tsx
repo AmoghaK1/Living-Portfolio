@@ -30,8 +30,8 @@ const experiences = [
 
 export default function BYExperience() {
   return (
-    <section id="experience" className="py-32" style={{ backgroundColor: colors.sectionTint }}>
-      <div className="max-w-5xl mx-auto px-10">
+    <section id="experience" className="py-16 md:py-32" style={{ backgroundColor: colors.sectionTint }}>
+      <div className="max-w-5xl mx-auto px-5 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -42,10 +42,10 @@ export default function BYExperience() {
           <p className="text-base font-semibold tracking-widest uppercase mb-3" style={{ color: colors.secondary }}>
             Where I've Worked
           </p>
-          <h2 className="text-5xl font-bold" style={{ color: colors.primary }}>Experience</h2>
+          <h2 className="text-4xl md:text-5xl font-bold" style={{ color: colors.primary }}>Experience</h2>
         </motion.div>
 
-        <div className="relative pl-8 space-y-14" style={{ borderLeft: `2px solid ${colors.tertiary}` }}>
+        <div className="relative pl-5 md:pl-8 space-y-10 md:space-y-14" style={{ borderLeft: `2px solid ${colors.tertiary}` }}>
           {experiences.map((exp, i) => (
             <motion.div
               key={i}
@@ -58,7 +58,7 @@ export default function BYExperience() {
               {/* Timeline dot */}
               <span className="absolute -left-[2.1rem] top-2 w-4 h-4 rounded-full shadow" style={{ background: colors.gradientTimeline, border: `2px solid ${colors.background}` }} />
 
-              <div className="rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300" style={{ backgroundColor: colors.white, border: `1px solid ${colors.tertiary}` }}>
+              <div className="rounded-2xl p-5 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-300" style={{ backgroundColor: colors.white, border: `1px solid ${colors.tertiary}` }}>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                   <div>
                     <h3 className="text-xl font-semibold" style={{ color: colors.primary }}>{exp.role}</h3>

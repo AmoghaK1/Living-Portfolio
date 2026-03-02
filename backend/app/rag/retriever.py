@@ -3,17 +3,15 @@ from .embeddings import model
 import numpy as np
 
 
-index,chunks=load_index()
+index, chunks = load_index()
 
 
-def search(query,k=4):
+def search(query, k=4):
 
-    query_vector=model.encode(
-        [query]
-    )
+    query_vector = np.array(list(model.embed([query])))
 
-    distances,indices=index.search(
-        np.array(query_vector),
+    distances, indices = index.search(
+        query_vector,
         k
     )
 

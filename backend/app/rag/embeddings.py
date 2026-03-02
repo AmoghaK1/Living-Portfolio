@@ -1,19 +1,19 @@
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
+import numpy as np
 
-model = SentenceTransformer(
-"all-MiniLM-L6-v2"
-)
+model = TextEmbedding("BAAI/bge-small-en-v1.5")
 
-def chunk_text(text,chunk_size=300,overlap=50):
 
-    words=text.split()
+def chunk_text(text, chunk_size=300, overlap=50):
 
-    chunks=[]
+    words = text.split()
 
-    for i in range(0,len(words),chunk_size-overlap):
+    chunks = []
 
-        chunk=" ".join(
-            words[i:i+chunk_size]
+    for i in range(0, len(words), chunk_size - overlap):
+
+        chunk = " ".join(
+            words[i:i + chunk_size]
         )
 
         chunks.append(chunk)
@@ -23,6 +23,6 @@ def chunk_text(text,chunk_size=300,overlap=50):
 
 def embed_texts(texts):
 
-    embeddings=model.encode(texts)
+    embeddings = np.array(list(model.embed(texts)))
 
     return embeddings

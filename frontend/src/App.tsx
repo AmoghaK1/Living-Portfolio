@@ -3,11 +3,18 @@ import ChatBox from "./components/ChatBox"
 import AnimatedBackground from "./components/AnimatedBackground"
 import ModeToggle from "./components/ModeToggle"
 import Backyard from "./pages/Backyard"
+import { setThemeColors, ThemeId } from "@/lib/colors"
 
 export default function App() {
   const [mode, setMode] = useState<"chat" | "portfolio">("chat")
   const [contentVisible, setContentVisible] = useState(true)
+  const [themeId, setThemeId] = useState<ThemeId>("sunlit-red")
   const transitioning = useRef(false)
+
+  const handleThemeChange = (nextTheme: ThemeId) => {
+    setThemeId(nextTheme)
+    setThemeColors(nextTheme)
+  }
 
   const switchTo = (target: "chat" | "portfolio") => {
     if (transitioning.current) return
@@ -42,7 +49,7 @@ export default function App() {
         ) : (
           <>
             <ModeToggle onSwitch={() => switchTo("portfolio")} />
-            <ChatBox />
+            <ChatBox themeId={themeId} onThemeChange={handleThemeChange} />
           </>
         )}
       </div>

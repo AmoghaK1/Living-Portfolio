@@ -22,7 +22,7 @@ export default function ModeToggle({ onSwitch }: Props) {
         onMouseLeave={e => (e.currentTarget.style.backgroundColor = colors.primary)}
       >
         <span className="md:hidden">Pro Mode</span>
-        <span className="hidden md:inline">Switch to Professional Mode</span>
+        <span className="hidden md:inline">Switch to Standard View</span>
       </button>
     </div>
   )

@@ -5,9 +5,10 @@ import { colors } from "@/lib/colors"
 
 type Props = {
   message: Message
+  theme?: typeof colors
 }
 
-export default function ChatMessage({ message }: Props) {
+export default function ChatMessage({ message, theme = colors }: Props) {
   const isUser = message.role === "user"
 
   return (
@@ -19,8 +20,8 @@ export default function ChatMessage({ message }: Props) {
       <div
         className="max-w-[88%] md:max-w-[70%] p-3 md:p-4 rounded-2xl shadow-sm leading-relaxed text-base md:text-[18px]"
         style={isUser
-          ? { backgroundColor: colors.primary, color: colors.background }
-          : { backgroundColor: colors.white, border: `1.5px solid ${colors.tertiary}`, color: colors.primary }
+          ? { backgroundColor: theme.primary, color: theme.background }
+          : { backgroundColor: theme.white, border: `1.5px solid ${theme.tertiary}`, color: theme.primary }
         }
       >
         <ReactMarkdown>

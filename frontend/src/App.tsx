@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import ChatBox from "./components/chatbox"
+import ChatBox from "./components/ChatBox"
 import AnimatedBackground from "./components/AnimatedBackground"
 import ModeToggle from "./components/ModeToggle"
 import Backyard from "./pages/Backyard"

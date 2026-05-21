@@ -130,7 +130,6 @@ export default function Hero({ theme }: Props) {
               loop: true,
               delay: 50,
               deleteSpeed: 30,
-              pauseFor: 1800,
             }}
           />
         </span>

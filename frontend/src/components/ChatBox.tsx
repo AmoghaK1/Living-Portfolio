@@ -199,7 +199,7 @@ export default function ChatBox({ themeId, onThemeChange, settingsOpen, onSettin
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60]"
             style={{ backdropFilter: "blur(18px)", backgroundColor: "rgba(10, 18, 28, 0.24)" }}
-            onClick={() => setSettingsOpen(false)}
+            onClick={() => onSettingsChange(false)}
           />
         )}
       </AnimatePresence>

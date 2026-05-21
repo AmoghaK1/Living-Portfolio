@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "react-parallax-mouse": "^2.1.0",
+    "react-tsparticles": "^2.12.2",
+    "tsparticles": "^4.0.5",
+    "tsparticles-slim": "^2.12.0"
+  }
+}

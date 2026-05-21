@@ -2,7 +2,13 @@ import { motion } from "framer-motion"
 import { colors } from "@/lib/colors"
 import pfp from "@/assets/pfp_image.jpeg"
 
-export default function BYHero() {
+interface Props {
+  isDarkTheme: boolean
+}
+
+export default function BYHero({ isDarkTheme }: Props) {
+  const viewProjectsTextColor = isDarkTheme ? "#000000" : "#ffffff"
+
   return (
     <section
       id="about"
@@ -56,8 +62,8 @@ export default function BYHero() {
           >
             <button
               onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-              className="px-7 py-3 rounded-none text-sm font-semibold text-white shadow-md hover:rounded-3xl hover:scale-105 transition-all duration-200 ease-in-out"
-              style={{ backgroundColor: colors.primary }}
+              className="px-7 py-3 rounded-none text-sm font-semibold shadow-md hover:rounded-3xl hover:scale-105 transition-all duration-200 ease-in-out"
+              style={{ backgroundColor: colors.primary, color: viewProjectsTextColor }}
               onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.accent)}
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = colors.primary)}
             >View Projects</button>
@@ -95,8 +101,8 @@ export default function BYHero() {
             <div className="flex gap-5 flex-wrap">
               <button
                 onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-8 py-4 rounded-none text-base font-semibold text-white shadow-md hover:rounded-3xl hover:scale-105 transition-all duration-200 ease-in-out"
-                style={{ backgroundColor: colors.primary }}
+                className="px-8 py-4 rounded-none text-base font-semibold shadow-md hover:rounded-3xl hover:scale-105 transition-all duration-200 ease-in-out"
+                style={{ backgroundColor: colors.primary, color: viewProjectsTextColor }}
                 onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.accent)}
                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = colors.primary)}
               >View Projects</button>

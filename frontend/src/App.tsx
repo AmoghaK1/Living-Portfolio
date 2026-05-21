@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import ChatBox from "./components/ChatBox"
+import ChatBox from "./components/chatbox"
 import AnimatedBackground from "./components/AnimatedBackground"
 import ModeToggle from "./components/ModeToggle"
 import Backyard from "./pages/Backyard"
@@ -9,6 +9,8 @@ export default function App() {
   const [mode, setMode] = useState<"chat" | "portfolio">("chat")
   const [contentVisible, setContentVisible] = useState(true)
   const [themeId, setThemeId] = useState<ThemeId>("sunlit-red")
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const isDarkTheme = ["midnight-plum", "neon-forest", "cobalt-ink", "ember-night"].includes(themeId)
   const transitioning = useRef(false)
 
   const handleThemeChange = (nextTheme: ThemeId) => {
@@ -39,17 +41,18 @@ export default function App() {
 
       {/* Only the content fades */}
       <div
+        className="relative z-10"
         style={{
           opacity: contentVisible ? 1 : 0,
           transition: "opacity 250ms ease-in-out",
         }}
       >
         {mode === "portfolio" ? (
-          <Backyard onBack={() => switchTo("chat")} />
+          <Backyard onBack={() => switchTo("chat")} isDarkTheme={isDarkTheme} />
         ) : (
           <>
-            <ModeToggle onSwitch={() => switchTo("portfolio")} />
-            <ChatBox themeId={themeId} onThemeChange={handleThemeChange} />
+            <ModeToggle onSwitch={() => switchTo("portfolio")} onOpenSettings={() => setSettingsOpen(true)} isDarkTheme={isDarkTheme} />
+            <ChatBox themeId={themeId} onThemeChange={handleThemeChange} settingsOpen={settingsOpen} onSettingsChange={setSettingsOpen} />
           </>
         )}
       </div>

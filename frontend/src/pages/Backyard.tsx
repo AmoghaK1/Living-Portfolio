@@ -6,6 +6,7 @@ import { colors } from "@/lib/colors"
 
 interface Props {
   onBack: () => void
+  isDarkTheme: boolean
 }
 
 const socialLinks = [
@@ -41,7 +42,7 @@ const socialLinks = [
   },
 ]
 
-export default function Backyard({ onBack }: Props) {
+export default function Backyard({ onBack, isDarkTheme }: Props) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.background, color: colors.primary }}>
       {/* Floating social links — left side, hidden on mobile */}
@@ -79,8 +80,8 @@ export default function Backyard({ onBack }: Props) {
       <div className="fixed top-0 left-0 right-0 z-50 flex justify-end items-center px-6 py-4 pointer-events-none">
         <button
           onClick={onBack}
-          className="pointer-events-auto relative px-5 py-2.5 text-sm font-semibold rounded-full text-white shadow-md transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
-          style={{ backgroundColor: colors.primary }}
+          className="pointer-events-auto relative px-5 py-2.5 text-sm font-semibold rounded-full shadow-md transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
+          style={{ backgroundColor: colors.primary, color: isDarkTheme ? "#000000" : "#ffffff" }}
           onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.accent)}
           onMouseLeave={e => (e.currentTarget.style.backgroundColor = colors.primary)}
         >
@@ -89,7 +90,7 @@ export default function Backyard({ onBack }: Props) {
       </div>
 
       <main className="pt-16">
-        <BYHero />
+        <BYHero isDarkTheme={isDarkTheme} />
         <BYExperience />
         <BYProjects />
         <BYContact />

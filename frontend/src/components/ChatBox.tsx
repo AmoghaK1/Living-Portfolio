@@ -9,6 +9,8 @@ import { motion, AnimatePresence } from "framer-motion"
 type Props = {
   themeId: ThemeId
   onThemeChange: (themeId: ThemeId) => void
+  settingsOpen: boolean
+  onSettingsChange: (open: boolean) => void
 }
 
 const themeCards: Array<{
@@ -27,19 +29,19 @@ const themeCards: Array<{
   { id: "ember-night", label: "Ember Night", subtitle: "smoky red heat", group: "Dark themes" },
 ]
 
-export default function ChatBox({ themeId, onThemeChange }: Props) {
+export default function ChatBox({ themeId, onThemeChange, settingsOpen, onSettingsChange }: Props) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
-  const [loadingStage, setLoadingStage] = useState<"typing" | "booting" | "sleepy">("typing")
+  const [loadingStage, setLoadingStage] = useState<"typing" | "booting" | "sleepy" | "reboot">("typing")
   const [showQuickQuestions, setShowQuickQuestions] = useState(true)
-  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const stopRef = useRef(false)
   const loadingTimersRef = useRef<number[]>([])
 
   const theme = themePresets[themeId]
+  const isDarkTheme = ["midnight-plum", "neon-forest", "cobalt-ink", "ember-night"].includes(themeId)
   const hasStarted = messages.length > 0 || loading
 
   const scrollToBottom = () => {
@@ -64,7 +66,7 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setSettingsOpen(false)
+        onSettingsChange(false)
       }
     }
 
@@ -90,7 +92,7 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
       window.setTimeout(() => {
         if (stopRef.current) return
         setLoadingStage("booting")
-      }, 2000)
+      }, 5000)
     )
 
     loadingTimersRef.current.push(
@@ -98,6 +100,13 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
         if (stopRef.current) return
         setLoadingStage("sleepy")
       }, 30000)
+    )
+
+    loadingTimersRef.current.push(
+      window.setTimeout(() => {
+        if (stopRef.current) return
+        setLoadingStage("reboot")
+      }, 60000)
     )
   }
 
@@ -151,8 +160,36 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
     { label: "Contact", prompt: "How can I contact Amogha?", icon: "✉️" },
   ]
 
+  const loadingChipClass = isDarkTheme
+    ? "rounded-2xl border border-white/15 bg-white/10 px-4 py-2 shadow-lg backdrop-blur-md"
+    : "rounded-2xl border border-black/10 bg-white/90 px-4 py-2 shadow-lg backdrop-blur-md"
+
+  const loadingChipTextClass = isDarkTheme
+    ? "font-mono text-sm tracking-[0.08em]"
+    : "font-serif text-sm tracking-[0.04em]"
+
+  const loadingTextStyle = isDarkTheme
+    ? { color: "#ffffff" }
+    : { color: "#000000" }
+
+  const renderLoadingDots = (dotColor: string) => (
+    <span className="inline-flex items-end gap-1.5" aria-hidden="true">
+      {[0, 1, 2].map((index) => (
+        <motion.span
+          key={index}
+          className="h-2.5 w-2.5 rounded-full"
+          style={{ backgroundColor: dotColor }}
+          animate={{ y: [0, -4, 0], opacity: [0.55, 1, 0.55] }}
+          transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: index * 0.12 }}
+        />
+      ))}
+    </span>
+  )
+
   return (
-    <div className="h-screen flex flex-col overflow-hidden relative" style={{ backgroundColor: theme.background }}>
+    // keep the page-level background in AnimatedBackground so decorative SVGs are visible;
+    // make the chat container transparent so the background layer shows through.
+    <div className="h-screen flex flex-col overflow-hidden relative" style={{ backgroundColor: 'transparent' }}>
       <AnimatePresence>
         {settingsOpen && (
           <motion.div
@@ -175,30 +212,29 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 14, scale: 0.98 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-x-4 top-20 mx-auto z-[70] w-full max-w-xl overflow-hidden rounded-[2rem] shadow-2xl"
+            className="fixed left-3 right-3 top-4 bottom-4 md:inset-x-4 md:top-20 md:bottom-auto md:mx-auto z-[70] w-auto md:w-full max-w-xl overflow-hidden rounded-[1.5rem] md:rounded-[2rem] shadow-2xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-6rem)]"
             style={{ backgroundColor: theme.white, border: `1.5px solid ${theme.tertiary}` }}
           >
-            <div className="flex items-start justify-between gap-4 px-5 md:px-6 py-5" style={{ background: theme.gradientPrimary }}>
+            <div className="sticky top-0 flex items-start justify-between gap-4 px-4 md:px-6 py-4 md:py-5" style={{ background: theme.gradientPrimary }}>
               <div>
-                <p className="text-xl md:text-2xl font-bold" style={{ color: theme.white }}>Settings</p>
+                <p className="text-lg md:text-2xl font-bold" style={{ color: theme.white }}>Settings</p>
                 
               </div>
               <button
-                onClick={() => setSettingsOpen(false)}
-                className="w-10 h-10 rounded-full flex items-center justify-center"
+                onClick={() => onSettingsChange(false)}
+                className="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0"
                 style={{ backgroundColor: "rgba(255,255,255,0.16)", color: theme.white }}
                 aria-label="Close settings"
               >
-                ×
               </button>
             </div>
 
-            <div className="p-5 md:p-6 space-y-6">
+            <div className="overflow-y-auto p-4 md:p-6 space-y-5 md:space-y-6">
               {( ["Light themes", "Dark themes"] as const ).map((groupName) => (
                 <section key={groupName} className="space-y-3">
                   <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: theme.secondary }}>{groupName}</p>
-                    <p className="text-sm mt-1" style={{ color: theme.bodyText }}>
+                    <p className="text-[11px] md:text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: theme.secondary }}>{groupName}</p>
+                    <p className="text-xs md:text-sm mt-1" style={{ color: theme.bodyText }}>
                       {groupName === "Light themes"
                         ? "Bright, airy palettes with a softer feel."
                         : "High-contrast palettes with richer night colors."}
@@ -210,12 +246,13 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
                       .map((card) => {
                         const palette = themePresets[card.id]
                         const isSelected = themeId === card.id
+                        const isDarkCard = card.group === "Dark themes"
 
                         return (
                           <button
                             key={card.id}
                             onClick={() => onThemeChange(card.id)}
-                            className="text-left rounded-2xl p-4 transition-all duration-200"
+                            className="text-left rounded-2xl p-3 md:p-4 transition-all duration-200"
                             style={{
                               backgroundColor: theme.white,
                               border: `1.5px solid ${isSelected ? palette.accent : palette.tertiary}`,
@@ -223,13 +260,13 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
                               color: palette.primary,
                             }}
                           >
-                            <div className="flex items-center justify-between gap-3">
-                              <div>
-                                <p className="font-semibold">{card.label}</p>
-                                <p className="text-sm mt-1" style={{ color: palette.secondary }}>{card.subtitle}</p>
+                            <div className="flex items-center justify-between gap-2 md:gap-3">
+                              <div className="min-w-0">
+                                <p className="text-sm md:text-base font-semibold truncate" style={{ color: isDarkCard ? (isDarkTheme ? "#b7b7b7" : "#525252") : palette.primary }}>{card.label}</p>
+                                <p className="text-xs md:text-sm mt-1 leading-tight" style={{ color: isDarkCard ? "#9CA3AF" : palette.secondary }}>{card.subtitle}</p>
                               </div>
-                              <div className="flex h-11 w-11 items-center justify-center rounded-full" style={{ background: palette.gradientAvatar, color: palette.white }}>
-                                <span className="text-lg">✦</span>
+                              <div className="flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full shrink-0" style={{ background: palette.gradientAvatar, color: palette.white }}>
+                                <span className="text-base md:text-lg">✦</span>
                               </div>
                             </div>
                           </button>
@@ -249,7 +286,7 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
                     setInput("")
                     setMessages([])
                     setShowQuickQuestions(true)
-                    setSettingsOpen(false)
+                    onSettingsChange(false)
                   }}
                   className="rounded-2xl px-4 py-3 text-left transition-all duration-200"
                   style={{
@@ -258,26 +295,14 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
                     color: theme.primary,
                   }}
                 >
-                  <p className="font-semibold">Clear chat</p>
-                  <p className="text-sm mt-1" style={{ color: theme.secondary }}>Wipe the conversation and start fresh.</p>
+                  <p className="text-sm md:text-base font-semibold">Clear chat</p>
+                  <p className="text-xs md:text-sm mt-1" style={{ color: theme.secondary }}>Wipe the conversation and start fresh.</p>
                 </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      <button
-        onClick={() => setSettingsOpen(true)}
-        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-transform duration-200 hover:scale-105 active:scale-95"
-        style={{ backgroundColor: theme.white, border: `1.5px solid ${theme.tertiary}`, color: theme.primary }}
-        aria-label="Open settings"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
-          <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
-          <path d="M19.4 13.5a7.8 7.8 0 0 0 .1-1.5 7.8 7.8 0 0 0-.1-1.5l2-1.5-2-3.5-2.4 1a8.4 8.4 0 0 0-2.6-1.5l-.4-2.5H9l-.4 2.5A8.4 8.4 0 0 0 6 6.5l-2.4-1-2 3.5 2 1.5a7.8 7.8 0 0 0-.1 1.5c0 .5 0 1 .1 1.5l-2 1.5 2 3.5 2.4-1a8.4 8.4 0 0 0 2.6 1.5l.4 2.5h6l.4-2.5a8.4 8.4 0 0 0 2.6-1.5l2.4 1 2-3.5-2-1.5Z" />
-        </svg>
-      </button>
 
       <AnimatePresence>
         {!hasStarted && (
@@ -289,7 +314,7 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
             className="absolute inset-0 flex flex-col items-center justify-center -translate-y-16"
             style={{ pointerEvents: "none", zIndex: 1 }}
           >
-            <Hero />
+            <Hero theme={theme} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -326,10 +351,24 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
               <ChatMessage key={i} message={m} theme={theme} />
             ))}
             {loading && (
-              <div className="text-sm" style={{ color: theme.secondary }}>
-                {loadingStage === "typing" && "AI typing..."}
-                {loadingStage === "booting" && "Sorry for the delay, Render takes a couple of minutes to boot up the server for the first time"}
-                {loadingStage === "sleepy" && "Hold on! the server is quite a heavy sleeper. trying my best..."}
+              <div className="flex items-center gap-3 text-sm">
+                {loadingStage === "typing" ? (
+                  <div className="flex items-center gap-3" style={{ color: theme.secondary }}>
+                    <span>AI typing</span>
+                    {renderLoadingDots(theme.secondary)}
+                  </div>
+                ) : (
+                  <div className={loadingChipClass}>
+                    <div className="flex items-center gap-3">
+                      {renderLoadingDots(isDarkTheme ? theme.accent : theme.primary)}
+                      <span className={loadingChipTextClass} style={loadingTextStyle}>
+                        {loadingStage === "booting" && "Sorry for the delay, Render takes a couple of minutes to boot up the server for the first time"}
+                        {loadingStage === "sleepy" && "Hold on! the server is quite a heavy sleeper. trying my best..."}
+                        {loadingStage === "reboot" && "The server might be up and running. Stop the current request and try again :)"}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </motion.div>
@@ -349,33 +388,99 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6, transition: { duration: 0.2 } }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="fixed bottom-[5.5rem] md:bottom-[8rem] left-0 right-0 flex md:flex-wrap md:justify-center gap-2 md:gap-3 px-4 overflow-x-auto flex-nowrap md:overflow-visible scrollbar-hide"
+            className="fixed bottom-[5.5rem] md:bottom-[8rem] left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-5xl flex md:flex-wrap md:justify-center gap-2 md:gap-3 px-4 overflow-x-auto flex-nowrap md:overflow-visible scrollbar-hide"
             style={{ zIndex: 40 }}
           >
-            {quickQuestions.map((q) => (
-              <button
-                key={q.label}
-                onClick={() => handleSend(q.prompt)}
-                className="shrink-0 flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-200"
-                style={{
-                  backgroundColor: theme.white,
-                  border: `1.5px solid ${theme.tertiary}`,
-                  color: theme.secondary,
-                  boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.backgroundColor = theme.tertiary
-                  e.currentTarget.style.color = theme.primary
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.backgroundColor = theme.white
-                  e.currentTarget.style.color = theme.secondary
-                }}
-              >
-                <span>{q.icon}</span>
-                <span>{q.label}</span>
-              </button>
-            ))}
+            {/* Mobile: two rows — top row 2 items, bottom row 3 items */}
+            <div className="w-full md:hidden">
+              <div className="grid grid-cols-2 gap-2">
+                {quickQuestions.slice(0, 2).map((q) => (
+                  <button
+                    key={q.label}
+                    onClick={() => handleSend(q.prompt)}
+                    className="w-full flex items-center justify-center gap-2 px-4 h-10 rounded-full text-[14px] font-medium transition-all duration-200"
+                    style={{
+                      backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                      border: `1.5px solid ${isDarkTheme ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+                      color: isDarkTheme ? theme.secondary : '#000000',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      boxShadow: isDarkTheme ? '0 8px 20px rgba(0,0,0,0.5)' : '0 6px 18px rgba(0,0,0,0.08)',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.backgroundColor = isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'
+                      e.currentTarget.style.color = isDarkTheme ? theme.primary : '#000000'
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.backgroundColor = isDarkTheme ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+                      e.currentTarget.style.color = isDarkTheme ? theme.secondary : '#000000'
+                    }}
+                  >
+                    <span>{q.icon}</span>
+                    <span>{q.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {quickQuestions.slice(2).map((q) => (
+                  <button
+                    key={q.label}
+                    onClick={() => handleSend(q.prompt)}
+                    className="w-full flex items-center justify-center gap-2 px-4 h-10 rounded-full text-[14px] font-medium transition-all duration-200"
+                    style={{
+                      backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                      border: `1.5px solid ${isDarkTheme ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+                      color: isDarkTheme ? theme.secondary : '#000000',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      boxShadow: isDarkTheme ? '0 8px 20px rgba(0,0,0,0.5)' : '0 6px 18px rgba(0,0,0,0.08)',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.backgroundColor = isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'
+                      e.currentTarget.style.color = isDarkTheme ? theme.primary : '#000000'
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.backgroundColor = isDarkTheme ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+                      e.currentTarget.style.color = isDarkTheme ? theme.secondary : '#000000'
+                    }}
+                  >
+                    <span>{q.icon}</span>
+                    <span>{q.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop/tablet: original inline chips */}
+            <div className="hidden md:flex md:flex-wrap md:justify-center gap-2 md:gap-3">
+              {quickQuestions.map((q) => (
+                <button
+                  key={q.label}
+                  onClick={() => handleSend(q.prompt)}
+                  className="shrink-0 flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-200"
+                  style={{
+                    backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                    border: `1.5px solid ${isDarkTheme ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+                    color: isDarkTheme ? theme.secondary : '#000000',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    boxShadow: isDarkTheme ? '0 8px 20px rgba(0,0,0,0.5)' : '0 6px 18px rgba(0,0,0,0.08)',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.backgroundColor = isDarkTheme ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'
+                    e.currentTarget.style.color = isDarkTheme ? theme.primary : '#000000'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.backgroundColor = isDarkTheme ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+                    e.currentTarget.style.color = isDarkTheme ? theme.secondary : '#000000'
+                  }}
+                >
+                  <span>{q.icon}</span>
+                  <span>{q.label}</span>
+                </button>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -389,8 +494,8 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask me anything..."
           rows={1}
-          className="flex-1 outline-none resize-none bg-transparent leading-relaxed self-center text-base md:text-[18px]"
-          style={{ color: theme.primary }}
+          className={`flex-1 outline-none resize-none bg-transparent leading-relaxed self-center text-base md:text-[18px] ${isDarkTheme ? "placeholder:text-white/70" : "placeholder:text-current"}`}
+          style={{ color: theme.primary, caretColor: theme.primary }}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault()
@@ -440,8 +545,8 @@ export default function ChatBox({ themeId, onThemeChange }: Props) {
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.2 }}
               onClick={() => handleSend(input)}
-              className="shrink-0 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-white transition-colors duration-200"
-              style={{ backgroundColor: theme.primary }}
+              className="shrink-0 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors duration-200"
+              style={{ backgroundColor: theme.primary, color: isDarkTheme ? "#000000" : "#ffffff" }}
               onMouseEnter={e => (e.currentTarget.style.backgroundColor = theme.accent)}
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = theme.primary)}
             >
